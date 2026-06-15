@@ -106,6 +106,10 @@ CMD ["node", "dist/index.js"]
 # docker builder du
 
 # https://gallery.ecr.aws/lambda/python/
+# docker volume ls -f dangling=true
+# docker volume ls -q -f dangling=true > volumes-to-delete.txt
+# Review volumes-to-delete.txt and delete only anonymous or never be used one.
+# xargs -r docker volume rm < volumes-to-delete.txt
 # docker system prune --all
 # docker rm -f js-hello-world
 # docker rmi -f js-hello-world-i
