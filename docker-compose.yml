@@ -1,11 +1,50 @@
 services:
   app:
+    image: js-hello-world-i
+
     build:
       context: .
       dockerfile: Dockerfile
     
     container_name: js-hello-world
-    restart: unless-stopped
+    # Policies: no, on-failure:5, unless-stopped, always
+    restart: no
+
+    # ---------------------------------------------------------
+    # SERVICE HEALTH & DEPENDENCIES (Commented out templates)
+    # ---------------------------------------------------------
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+    #   start_period: 5s # Give the app time to start before the first check
+    #   interval: 30s    # How often to check
+    #   timeout: 10s     # How long to wait for a response
+    #   retries: 3       # How many consecutive failures to become unhealthy
+
+    # depends_on:
+    #   postgres_db:
+    #     condition: service_healthy
+
+    # ---------------------------------------------------------
+    # LOGGING
+    # Docker only supports size/count rotation natively.
+    # For daily rotation (e.g., 10 days), implement TimedRotatingFileHandler-like in Python.
+
+    #all_file_handler:
+    #    class: logging.handlers.TimedRotatingFileHandler
+    #    level: DEBUG
+    #    formatter: detail
+    #    filename: 'logs/alexsmail-dns-fix.log'
+    #    when: midnight
+    #    backupCount: 10
+    #    delay: True
+
+    # ---------------------------------------------------------
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m" # Max 100 megabytes per file
+        max-file: "10"   # Keep 10 files max, delete older ones
+
     
     # ---------------------------------------------------------
     # HARDWARE BRIDGE: Identity mapping
@@ -15,6 +54,11 @@ services:
     # ---------------------------------------------------------
     user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     
+    # Emulation of -i and -t flags from the "docker run -it" command
+    # This preserves colored output in logs and proper terminal formatting
+    stdin_open: true
+    tty: true
+
     environment:
       # Explicit environment flag for runtime
       - NODE_ENV=development
@@ -31,7 +75,29 @@ services:
       # Anonymous volume to protect the container's node_modules from being 
       # overwritten by the host's node_modules (prevents binary ABI mismatches).
       - /work/js-hello-world/node_modules
+
+      # Optional: If your app writes local logs or state files, you can map them securely:
+      # - ./logs:/app/logs
     
-    # Override the ENTRYPOINT CMD to use 'tsx' in watch mode.
+    # Override the ENTRYPOINT CMD to use the dev script.
     # It recompiles and restarts Node.js on-the-fly when you hit 'Save' in Kate.
-    command: npx tsx watch index.ts
+    command: npm run dev
+
+#docker compose build --no-cache --progress=plain
+#docker compose up
+##docker compose up -d
+#docker compose down -v
+#docker logs -f js-hello-world
+
+#Useful checks.
+
+#docker compose config
+#docker compose exec js-hello-world bash
+#docker compose ps
+#See all logs
+#docker compose logs -f
+#docker compose logs --tail=120 app
+#docker compose logs app | grep -E 'ChromaDB|MemoryVectorStore|DEGRADED'
+#Direct way without compose
+#docker logs --tail=120 js-hello-world
+#docker logs js-hello-world | grep -E 'ChromaDB|MemoryVectorStore|DEGRADED'
