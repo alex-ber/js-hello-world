@@ -78,9 +78,9 @@ CMD ["node", "dist/index.js"]
 #docker run -it --entrypoint /bin/bash js-hello-world-i
 
 
-#docker tag js-hello-world-i alexberkovich/js-hello-world:0.2.3
+#docker tag js-hello-world-i alexberkovich/js-hello-world:0.0.1
 #docker tag js-hello-world-i alexberkovich/js-hello-world:latest
-#docker push alexberkovich/js-hello-world:0.2.3
+#docker push alexberkovich/js-hello-world:0.0.1
 #docker push alexberkovich/js-hello-world:latest
 
 
