@@ -28,5 +28,13 @@ To avoid permission decoherence between the Host OS and the Docker runtime (espe
 5. If you want to read logs use (for example, you've used `docker compose up -d` command)
 
    ```bash
-   docker logs -f js-hello-world
+   #See all logs
+   docker compose logs -f
+   #docker compose logs --tail=120 app
+   #docker compose logs app | grep -E 'Hello'
+   
+   #Direct way without compose
+   docker logs --tail=120 js-hello-world
+   docker logs js-hello-world | grep -E 'Hello'
+
    ```
