@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    container_name: js-hello-world
+    restart: unless-stopped
+    
+    # ---------------------------------------------------------
+    # HARDWARE BRIDGE: Identity mapping
+    # Maps the internal container user to your bare-metal user.
+    # Reads HOST_UID/HOST_GID from .env, falling back to 1000:1000.
+    # Guarantees that files created by the container belong to the host user.
+    # ---------------------------------------------------------
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    
+    environment:
+      # Explicit environment flag for runtime
+      - NODE_ENV=development
+      # - PORT=3000 (Uncomment if you add an Express/Fastify server later)
+    
+    # ports:
+    #   - "3000:3000"
+    
+    volumes:
+      # Transparent mount: Map the bare-metal path directly into the container's WORKDIR.
+      # This ensures ESLint, Pyright, and Kate Debugger map files 1:1 without path translation.
+      - .:/work/js-hello-world
+      
+      # Anonymous volume to protect the container's node_modules from being 
+      # overwritten by the host's node_modules (prevents binary ABI mismatches).
+      - /work/js-hello-world/node_modules
+    
+    # Override the ENTRYPOINT CMD to use 'tsx' in watch mode.
+    # It recompiles and restarts Node.js on-the-fly when you hit 'Save' in Kate.
+    command: npx tsx watch index.ts

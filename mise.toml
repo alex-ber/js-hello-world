@@ -1,0 +1,24 @@
+[tools]
+# Core JS/TS runtime
+node = "22"
+
+# Global fallback for ESLint (helps Kate's native plugin find it if not installed locally yet)
+"npm:eslint" = "10.5.0"
+
+# Language Servers for Kate LSP Client
+"npm:typescript-language-server" = "4.3.3"
+"npm:vscode-langservers-extracted" = "4.10.0" # Provides JSON, HTML, CSS LSPs
+
+# Optional but useful LSPs for infrastructure files
+"npm:dockerfile-language-server-nodejs" = "0.15.0"
+"npm:yaml-language-server" = "1.23.0" 
+
+# Note: TypeScript itself is not needed here as a global tool, 
+# because typescript-language-server will use the local one (v6.0.3) from package.json!
+
+[env]
+# Add local node_modules binaries to PATH so that Kate and the terminal can see them
+
+_.path = [
+  "./node_modules/.bin"
+]
