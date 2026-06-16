@@ -91,9 +91,9 @@ services:
 #docker logs -f js-hello-world
 
 #Useful checks.
-
+#docker compose run --rm --entrypoint bash app
+#docker compose exec app bash
 #docker compose config
-#docker compose exec js-hello-world bash
 #docker compose ps
 #See all logs
 #docker compose logs -f
