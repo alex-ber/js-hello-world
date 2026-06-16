@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    
+
     container_name: js-hello-world
     # Policies: no, on-failure:5, unless-stopped, always
     restart: no
@@ -45,7 +45,7 @@ services:
         max-size: "100m" # Max 100 megabytes per file
         max-file: "10"   # Keep 10 files max, delete older ones
 
-    
+
     # ---------------------------------------------------------
     # HARDWARE BRIDGE: Identity mapping
     # Maps the internal container user to your bare-metal user.
@@ -53,7 +53,7 @@ services:
     # Guarantees that files created by the container belong to the host user.
     # ---------------------------------------------------------
     user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
-    
+
     # Emulation of -i and -t flags from the "docker run -it" command
     # This preserves colored output in logs and proper terminal formatting
     stdin_open: true
@@ -63,30 +63,30 @@ services:
       # Explicit environment flag for runtime
       - NODE_ENV=development
       # - PORT=3000 (Uncomment if you add an Express/Fastify server later)
-    
+
     # ports:
     #   - "3000:3000"
-    
+
     volumes:
       # Transparent mount: Map the bare-metal path directly into the container's WORKDIR.
       # This ensures ESLint, Pyright, and Kate Debugger map files 1:1 without path translation.
       - .:/work/js-hello-world
-      
+
       # Anonymous volume to protect the container's node_modules from being 
       # overwritten by the host's node_modules (prevents binary ABI mismatches).
       - /work/js-hello-world/node_modules
 
       # Optional: If your app writes local logs or state files, you can map them securely:
       # - ./logs:/app/logs
-    
+
     # Override the ENTRYPOINT CMD to use the dev script.
     # It recompiles and restarts Node.js on-the-fly when you hit 'Save' in Kate.
     command: npm run dev
 
 #docker compose build --no-cache --progress=plain
-#docker compose up
-##docker compose up -d
-#docker compose down -v
+#docker compose up --remove-orphans
+##docker compose up -d --remove-orphans
+#docker compose down -v --remove-orphans
 #docker logs -f js-hello-world
 
 #Useful checks.

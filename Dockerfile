@@ -1,8 +1,4 @@
-#[DECOHERENCE_BOUNDARY]: Ubuntu Base (Size Limit: IGNORED)
-# Absolute Phase Lock. Pointer tags (e.g., :24.04) are PROHIBITED.
-# docker pull ubuntu:24.04
-# docker inspect --format='{{index .RepoDigests 0}}' ubuntu:24.04
-FROM ubuntu@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b
+FROM alexberkovich/ubuntu-snapshot:2025-06-16
 
 #[HARDWARE_CONFIG]: Deterministic execution and compilation flags
 # Consolidated environment variables to reduce layer allocation overhead.
@@ -15,20 +11,14 @@ ENV DEBIAN_FRONTEND=noninteractive \
 WORKDIR /work/js-hello-world
 
 #[RUNTIME_ENVIRONMENT]: Deterministic APT Projection
-# Hard package pinning for maximum reproducibility.
+# Hard package pinning for maximum reproducibility in base image.
 RUN set -ex && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
         nano \
         curl \
         xz-utils \
     && rm -rf /var/lib/apt/lists/* \
-    && apt-mark hold ca-certificates nano curl xz-utils \
-    && echo 'Package: ca-certificates' > /etc/apt/preferences.d/ca-certificates-pin \
-    && echo 'Pin: version 20240203' >> /etc/apt/preferences.d/ca-certificates-pin \
-    && echo 'Pin-Priority: 1001' >> /etc/apt/preferences.d/ca-certificates-pin \
-    && update-ca-certificates --fresh \
     && echo 'set syntax "none"' >> /etc/nanorc
 
 #[HARDWARE_BRIDGE]: Injecting Node.js Runtime
