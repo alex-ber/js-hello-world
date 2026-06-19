@@ -55,6 +55,7 @@ RUN set -ex && \
 # Execute the compiled AOT logic.
 # For live-reload dev mode, docker-compose will override this with `npx tsx watch index.ts`.
 CMD ["node", "dist/index.js"]
+##CMD ["sleep", "infinity"]
 
 
 #mise prune

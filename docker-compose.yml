@@ -68,6 +68,26 @@ services:
     #   - "3000:3000"
 
     volumes:
+      #- .:/app
+      # Explicitly mount the current directory (.)
+      # Transparent mount: Map the bare-metal path directly into the container's WORKDIR.
+      # This ensures ESLint, Pyright, and Kate Debugger map files 1:1 without path translation.
+      - type: bind
+        source: .
+        target: /work/js-hello-world
+
+      # Named mount to preserve the isolated environment
+      - type: volume
+        source: js-hello-world-node-module-data
+        target: /work/js-hello-world/node_modules
+
+      # Optional: If your app writes local logs or state files, you can map them securely:
+      # - ./logs:/app/logs
+      #- type: bind
+      #  source: ./logs
+      #  target: /app/logs
+
+    volumes:
       # Transparent mount: Map the bare-metal path directly into the container's WORKDIR.
       # This ensures ESLint, Pyright, and Kate Debugger map files 1:1 without path translation.
       - .:/work/js-hello-world
@@ -83,11 +103,13 @@ services:
     # It recompiles and restarts Node.js on-the-fly when you hit 'Save' in Kate.
     command: npm run dev
 
+volumes:
+  js-hello-world-node-module-data:
+
 #docker compose build --no-cache --progress=plain
 #docker compose up
 ##docker compose up -d
-#docker compose down -v --remove-orphans
-##docker compose down --remove-orphans
+##docker compose down -v --remove-orphans
 #docker logs -f js-hello-world
 
 #Useful checks.
