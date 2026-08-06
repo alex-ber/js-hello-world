@@ -1,4 +1,4 @@
-FROM alexberkovich/ubuntu-snapshot:2025-06-16
+FROM alexberkovich/ubuntu2404-snapshot:2026-08-06
 
 #[HARDWARE_CONFIG]: Deterministic execution and compilation flags
 # Consolidated environment variables to reduce layer allocation overhead.
@@ -23,7 +23,7 @@ RUN set -ex && \
 
 #[HARDWARE_BRIDGE]: Injecting Node.js Runtime
 # Direct binary extraction ensures 100% deterministic resolution matching the host version.
-ENV NODE_VERSION=22.22.3 \
+ENV NODE_VERSION=22.23.2 \
     NODE_DIST=linux-x64 \
     PATH="/usr/local/bin:$PATH"
 
@@ -69,9 +69,9 @@ CMD ["node", "dist/index.js"]
 #docker run -it --entrypoint /bin/bash js-hello-world-i
 
 
-#docker tag js-hello-world-i alexberkovich/js-hello-world:0.0.1
+#docker tag js-hello-world-i alexberkovich/js-hello-world:0.0.2
 #docker tag js-hello-world-i alexberkovich/js-hello-world:latest
-#docker push alexberkovich/js-hello-world:0.0.1
+#docker push alexberkovich/js-hello-world:0.0.2
 #docker push alexberkovich/js-hello-world:latest
 
 

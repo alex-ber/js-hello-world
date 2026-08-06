@@ -87,21 +87,21 @@ services:
       #  source: ./logs
       #  target: /app/logs
 
-    volumes:
-      # Transparent mount: Map the bare-metal path directly into the container's WORKDIR.
-      # This ensures ESLint, Pyright, and Kate Debugger map files 1:1 without path translation.
-      - .:/work/js-hello-world
+    #volumes:
+    #  # Transparent mount: Map the bare-metal path directly into the container's WORKDIR.
+    #  # This ensures ESLint, Pyright, and Kate Debugger map files 1:1 without path translation.
+    #  - .:/work/js-hello-world
 
-      # Anonymous volume to protect the container's node_modules from being 
-      # overwritten by the host's node_modules (prevents binary ABI mismatches).
-      - /work/js-hello-world/node_modules
+    #  # Anonymous volume to protect the container's node_modules from being 
+    #  # overwritten by the host's node_modules (prevents binary ABI mismatches).
+    #  - /work/js-hello-world/node_modules
 
-      # Optional: If your app writes local logs or state files, you can map them securely:
-      # - ./logs:/app/logs
+    #   # Optional: If your app writes local logs or state files, you can map them securely:
+    #   # - ./logs:/app/logs
 
-    # Override the ENTRYPOINT CMD to use the dev script.
-    # It recompiles and restarts Node.js on-the-fly when you hit 'Save' in Kate.
-    command: npm run dev
+    ## Override the ENTRYPOINT CMD to use the dev script.
+    ## It recompiles and restarts Node.js on-the-fly when you hit 'Save' in Kate.
+    #command: npm run dev
 
 volumes:
   js-hello-world-node-module-data:
