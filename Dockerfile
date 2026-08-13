@@ -1,4 +1,4 @@
-FROM alexberkovich/ubuntu2404-snapshot:2026-08-06
+FROM alexberkovich/ubuntu2404-snapshot:2026-08-12
 
 #[HARDWARE_CONFIG]: Deterministic execution and compilation flags
 # Consolidated environment variables to reduce layer allocation overhead.
@@ -69,9 +69,9 @@ CMD ["node", "dist/index.js"]
 #docker run -it --entrypoint /bin/bash js-hello-world-i
 
 
-#docker tag js-hello-world-i alexberkovich/js-hello-world:0.0.2
+#docker tag js-hello-world-i alexberkovich/js-hello-world:0.0.3
 #docker tag js-hello-world-i alexberkovich/js-hello-world:latest
-#docker push alexberkovich/js-hello-world:0.0.2
+#docker push alexberkovich/js-hello-world:0.0.3
 #docker push alexberkovich/js-hello-world:latest
 
 
