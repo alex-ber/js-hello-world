@@ -1,4 +1,4 @@
-FROM alexberkovich/ubuntu2404-snapshot:2026-10-05
+FROM alexberkovich/ubuntu2404-snapshot:2026-10-26
 
 #[HARDWARE_CONFIG]: Deterministic execution and compilation flags
 # Consolidated environment variables to reduce layer allocation overhead.
